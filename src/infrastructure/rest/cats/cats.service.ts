@@ -18,7 +18,7 @@ export class CatsService {
         const cat = new Cat(id, name, breed);
         this.cats.push(cat);
 
-        return id;
+        return cat;
     }
 
     updateCat(id: number, name: string, breed: string) {
@@ -28,7 +28,7 @@ export class CatsService {
         updatedCat.name = name || updatedCat.name;
         updatedCat.breed = breed || updatedCat.breed;
 
-        this.cats[catIndex] = updatedCat;
+        this.cats[catIndex] = updatedCat as Cat;
     }
 
     private findCat(id: number): [Cat, number] {

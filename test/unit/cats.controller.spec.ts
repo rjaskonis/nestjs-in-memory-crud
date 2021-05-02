@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CatsController } from '@infrastructure/http/cats/cats.controller';
-import { CatsService } from '@infrastructure/http/cats/cats.service';
-import { Cat } from '@/infrastructure/http/cats/cats.model';
+import { CatsController } from '@infrastructure/rest/cats/cats.controller';
+import { CatsService } from '@infrastructure/rest/cats/cats.service';
+import { Cat } from '@/infrastructure/rest/cats/cats.model';
 
 describe('CatsController', () => {
     let catsController: CatsController;
@@ -16,10 +16,19 @@ describe('CatsController', () => {
     });
 
     it('should return array of Cats', () => {
-        const { id: firstCatId } = catsController.addCat('Xane', 'American');
-        const { id: secondCatId } = catsController.addCat('Pussy', 'American');
+        const { id: firstCatId } = catsController.addCat({
+            name: 'Xane',
+            breed: 'American',
+        });
+        const { id: secondCatId } = catsController.addCat({
+            name: 'Pussy',
+            breed: 'American',
+        });
 
-        catsController.updateCat(2, 'Pretty Pussy', 'American');
+        catsController.updateCat(2, {
+            name: 'Pretty Pussy',
+            breed: 'American',
+        });
 
         const result = catsController.getCats();
         console.log(result);

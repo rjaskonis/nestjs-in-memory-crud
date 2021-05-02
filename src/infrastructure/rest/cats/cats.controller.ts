@@ -3,6 +3,7 @@ import {
     Controller,
     Get,
     HttpStatus,
+    NotAcceptableException,
     Param,
     ParseIntPipe,
     Post,
@@ -13,6 +14,8 @@ import { DashLettersPipe } from '../common/pipes/dash-letters.pipe';
 import { UpperCasePipe } from '../common/pipes/uppercase.pipe';
 import { Cat } from './cats.model';
 import { CatsService } from './cats.service';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { UpdateCatDto } from './dto/update-cat.dto';
 
 @Controller('cats')
 export class CatsController {
@@ -24,9 +27,14 @@ export class CatsController {
     }
 
     @Post()
-    addCat(@Body('name') name: string, @Body('breed') breed: string) {
-        const generatedId = this.catService.addCat(name, breed);
-        return { id: generatedId };
+    addCat(@Body() createCatDto: CreateCatDto) {
+        console.log(createCatDto);
+
+        const createdCat = this.catService.addCat(
+            createCatDto.name,
+            createCatDto.breed,
+        );
+        return createdCat;
     }
 
     @Put(':id')
@@ -39,12 +47,11 @@ export class CatsController {
             }), // or @Param('id', ParseIntPipe) // 400
         )
         id: number,
-        @Body('name') name: string,
-        @Body('breed') breed: string,
+        @Body() updateCatDto: UpdateCatDto,
     ) {
-        console.log(typeof id, name, breed);
+        console.log(typeof id, updateCatDto.name, updateCatDto.breed);
 
-        this.catService.updateCat(id, name, breed);
+        this.catService.updateCat(id, updateCatDto.name, updateCatDto.breed);
         return null;
     }
 }
